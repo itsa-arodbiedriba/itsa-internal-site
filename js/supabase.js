@@ -13,7 +13,7 @@ export async function addMessage(name, email, message) {
   try {
     const { data, error } = await supabase
       .from('messages')
-      .insert([{ name, email, message }]);
+      .insert([{ name, email, message }], { returning: 'representation' });
 
     if (error) {
       console.error("Kļūda saglabājot datus:", error.message);

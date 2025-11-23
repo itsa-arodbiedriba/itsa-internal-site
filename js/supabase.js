@@ -21,14 +21,14 @@ export async function addMessage(name, email, message) {
       return null;
     }
 
-    // Vienkāršots un nemaldinošs paziņojums
+    // Vienkāršots paziņojums lietotājam
     console.log("Saglabāts:", data);
     alert("Paldies, dati pieņemti!");
     return data;
 
   } catch (err) {
     console.error("Neapstrādāta kļūda:", err);
-    alert("Radās sistēmas kļūda. Mēģini vēlreiz.");
+    // Sistēmas kļūdas gadījumā nerādām mulsinošu alert, tikai logā
     return null;
   }
 }

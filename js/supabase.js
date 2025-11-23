@@ -1,7 +1,6 @@
 // Supabase klienta inicializācija
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-// ⚠️ Šeit ievieto savus Supabase projekta datus
 const supabaseUrl = "https://knpxnqtqxavzkaaqqpni.supabase.co"
 const supabaseKey = "sb_publishable_lGQehBv8c3Lc2DaxrME91A_cj1NKD03"
 export const supabase = createClient(supabaseUrl, supabaseKey)
@@ -21,14 +20,15 @@ export async function addMessage(name, email, message) {
       return null;
     }
 
-    // Vienkāršots paziņojums lietotājam
     console.log("Saglabāts:", data);
+    // Paziņojums + pāradresācija
     alert("Paldies, dati pieņemti!");
+    window.location.href = "dati-pienemti.html"; 
     return data;
 
   } catch (err) {
     console.error("Neapstrādāta kļūda:", err);
-    // Sistēmas kļūdas gadījumā nerādām mulsinošu alert, tikai logā
+    // Vairs nerādām alert, tikai logā
     return null;
   }
 }

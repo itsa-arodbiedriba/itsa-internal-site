@@ -10,16 +10,31 @@ export const supabase = createClient(supabaseUrl, supabaseKey)
 
 // Datu ievade (INSERT)
 export async function addMessage(name, email, message) {
-  const { data, error } = await supabase
-    .from('messages')
-    .insert([
-      { name: name, email: email, message: message }
-    ])
-  if (error) {
-    console.error("Kļūda saglabājot datus:", error.message)
-    return null
+  try {
+    const { data, error } = await supabase
+      .from('messages')
+      .insert([{ name, email, message }]);
+
+    if (error) {
+      console.error("Kļūda saglabājot datus:", error.message);
+      alert("Radās kļūda saglabājot datus. Mēģini vēlreiz.");
+      return null;
+    }
+
+    if (data && data.length > 0) {
+      console.log("Saglabāts:", data);
+      alert("Ziņa veiksmīgi saglabāta!");
+      return data;
+    }
+
+    alert("Nezināms rezultāts — pārbaudi datu bāzi.");
+    return null;
+
+  } catch (err) {
+    console.error("Neapstrādāta kļūda:", err);
+    alert("Radās sistēmas kļūda. Mēģini vēlreiz.");
+    return null;
   }
-  return data
 }
 
 // Datu izgūšana (SELECT)

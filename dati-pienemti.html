@@ -1,32 +1,87 @@
-// Supabase klienta inicializācija
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-
-const supabaseUrl = "https://knpxnqtqxavzkaaqqpni.supabase.co"
-const supabaseKey = "sb_publishable_lGQehBv8c3Lc2DaxrME91A_cj1NKD03"
-export const supabase = createClient(supabaseUrl, supabaseKey)
-
-// ====== Funkcija datu ievadei ======
-export async function addMessage(name, email, message) {
-  try {
-    const { error } = await supabase
-      .from('messages')
-      .insert([{ name, email, message }], { returning: 'minimal' }); 
-      // returning: 'minimal' – saglabā, bet neatgriež datus, pietiek ar to
-
-    if (error) {
-      console.error("Kļūda saglabājot datus:", error.message);
-      alert("Radās kļūda saglabājot datus. Mēģini vēlreiz.");
-      return null;
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8">
+  <title>Paldies, dati pieņemti</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
+    h1 {
+      color: #333;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background: #0078d7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005fa3;
+    }
+    #status {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ziņu forma</h1>
+  <form id="messageForm">
+    <label for="name">Vārds:</label>
+    <input type="text" id="name" required>
 
-    // Tikai viens paziņojums + pāradresācija
-    alert("Paldies, dati pieņemti!");
-    window.location.href = "dati-pienemti.html";
-    return true;
+    <label for="email">E-pasts:</label>
+    <input type="email" id="email" required>
 
-  } catch (err) {
-    console.error("Neapstrādāta kļūda:", err);
-    // Vairs nerādām alert, tikai logā
-    return null;
-  }
-}
+    <label for="message">Ziņa:</label>
+    <textarea id="message" required></textarea>
+
+    <button type="submit">Nosūtīt</button>
+  </form>
+  <div id="status"></div>
+
+  <script type="module">
+    import { addMessage } from './supabase.js';
+
+    const form = document.getElementById('messageForm');
+    const statusDiv = document.getElementById('status');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      const result = await addMessage(name, email, message);
+      if (result) {
+        statusDiv.textContent = "Paldies, dati pieņemti!";
+        statusDiv.style.color = "green";
+      } else {
+        statusDiv.textContent = "Radās kļūda saglabājot datus.";
+        statusDiv.style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>

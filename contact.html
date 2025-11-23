@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontakti - Informācijas tehnoloģiju speciālistu arodbiedrība</title>
+  <!-- Atsauce uz vienoto CSS failu -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Kontakti</h1>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Sākums</a></li>
+      <li><a href="about.html">Par mums</a></li>
+      <li><a href="contact.html" class="active">Kontakti</a></li>
+      <li><a href="partners.html">Partneri</a></li>
+    </ul>
+  </nav>
+
+  <main class="contact">
+    <!-- Kontaktinformācija -->
+    <section class="contact-info">
+      <h2>Sazinies ar mums</h2>
+      <p><strong>Adrese:</strong> Rīga, Latvija</p>
+      <p><strong>Tālrunis:</strong> +371 27886624</p>
+      <p><strong>E-pasts:</strong> info@biedriem.lv</p>
+    </section>
+
+    <!-- Kontaktforma -->
+    <section class="contact-form">
+      <h2>Raksti mums</h2>
+      <form id="contactForm" autocomplete="off">
+        <label for="name">Vārds, Uzvārds:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">E-pasts:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message">Ziņa:</label>
+        <textarea id="message" name="message" rows="6" required></textarea>
+
+        <button type="submit">Nosūtīt</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2008–2025 Informācijas tehnoloģiju speciālistu arodbiedrība</p>
+  </footer>
+
+  <!-- Supabase integrācija -->
+  <script type="module">
+    import { addMessage } from './js/supabase.js'
+
+    const form = document.getElementById('contactForm')
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      // Ievades dati
+      const name = form.name.value.trim()
+      const email = form.email.value.trim()
+      const message = form.message.value.trim()
+
+      // Validācija
+      if (!name || !email || !message) {
+        alert("Lūdzu aizpildi visus laukus!")
+        return
+      }
+
+      // Saglabāšana Supabase datu bāzē
+      const result = await addMessage(name, email, message)
+
+      if (result) {
+        window.location.href = "paldies.html"
+      } else {
+        alert("Radās kļūda saglabājot datus. Mēģini vēlreiz!")
+      }
+    })
+  </script>
+</body>
+</html>

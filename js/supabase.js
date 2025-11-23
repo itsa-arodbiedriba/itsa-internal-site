@@ -21,14 +21,10 @@ export async function addMessage(name, email, message) {
       return null;
     }
 
-    if (data && data.length > 0) {
-      console.log("Saglabāts:", data);
-      alert("Ziņa veiksmīgi saglabāta!");
-      return data;
-    }
-
-    alert("Nezināms rezultāts — pārbaudi datu bāzi.");
-    return null;
+    // Vienkāršots un nemaldinošs paziņojums
+    console.log("Saglabāts:", data);
+    alert("Paldies, dati pieņemti!");
+    return data;
 
   } catch (err) {
     console.error("Neapstrādāta kļūda:", err);

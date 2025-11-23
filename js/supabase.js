@@ -11,7 +11,6 @@ export async function addMessage(name, email, message) {
     const { error } = await supabase
       .from('messages')
       .insert([{ name, email, message }], { returning: 'minimal' }); 
-      // returning: 'minimal' – saglabā, bet neatgriež datus, pietiek ar to
 
     if (error) {
       console.error("Kļūda saglabājot datus:", error.message);
@@ -19,14 +18,12 @@ export async function addMessage(name, email, message) {
       return null;
     }
 
-    // Tikai viens paziņojums + pāradresācija
+    // Vienkāršs paziņojums
     alert("Paldies, dati pieņemti!");
-    window.location.href = "dati-pienemti.html";
     return true;
 
   } catch (err) {
     console.error("Neapstrādāta kļūda:", err);
-    // Vairs nerādām alert, tikai logā
     return null;
   }
 }
